@@ -17,3 +17,38 @@ def create_teacher(db: Session, teacher_in: TeacherCreate) -> Teacher:
     db.commit()
     db.refresh(teacher)
     return teacher
+
+
+def bulk_create_teachers(db: Session, teachers: list[TeacherCreate]) -> tuple[list[Teacher], list[dict]]:
+    """
+    Bulk create teachers from CSV data.
+    Returns: (created_teachers, errors)
+    """
+    created_teachers = []
+    errors = []
+    
+    for idx, teacher_in in enumerate(teachers):
+        try:
+            teacher = Teacher(**teacher_in.dict())
+            db.add(teacher)
+            created_teachers.append(teacher)
+        except Exception as e:
+            errors.append({
+                "row": idx + 2,
+                "error": str(e),
+                "data": teacher_in.dict()
+            })
+    
+    try:
+        db.commit()
+        for teacher in created_teachers:
+            db.refresh(teacher)
+    except Exception as e:
+        db.rollback()
+        errors.append({
+            "row": "all",
+            "error": f"Failed to save to database: {str(e)}"
+        })
+        created_teachers = []
+    
+    return created_teachers, errors
