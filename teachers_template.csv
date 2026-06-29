@@ -1,0 +1,6 @@
+first_name,last_name,employee_id,email,subject,phone_number
+Alice,Johnson,EMP001,alice.johnson@school.com,Mathematics,9123456789
+Bob,Smith,EMP002,bob.smith@school.com,English,9123456790
+Carol,Davis,EMP003,carol.davis@school.com,Science,9123456791
+David,Miller,EMP004,david.miller@school.com,History,9123456792
+Emma,Wilson,EMP005,emma.wilson@school.com,Physical Education,9123456793
